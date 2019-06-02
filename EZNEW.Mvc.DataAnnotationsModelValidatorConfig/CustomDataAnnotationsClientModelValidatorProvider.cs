@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using EZNEW.Framework.IoC;
 
 namespace EZNEW.Mvc.DataAnnotationsModelValidatorConfig
 {
@@ -18,8 +19,9 @@ namespace EZNEW.Mvc.DataAnnotationsModelValidatorConfig
         private readonly IStringLocalizerFactory _stringLocalizerFactory;
         private readonly IValidationAttributeAdapterProvider _validationAttributeAdapterProvider;
 
-        public CustomDataAnnotationsClientModelValidatorProvider(IServiceProvider serviceProvider)
+        public CustomDataAnnotationsClientModelValidatorProvider()
         {
+            IServiceProvider serviceProvider = ContainerManager.ServiceProvider;
             IValidationAttributeAdapterProvider validationAttributeAdapterProvider = serviceProvider.GetService(typeof(IValidationAttributeAdapterProvider)) as IValidationAttributeAdapterProvider;
             IOptions<MvcDataAnnotationsLocalizationOptions> options = serviceProvider.GetService(typeof(IOptions<MvcDataAnnotationsLocalizationOptions>)) as IOptions<MvcDataAnnotationsLocalizationOptions>;
             IStringLocalizerFactory stringLocalizerFactory = serviceProvider.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
@@ -54,8 +56,8 @@ namespace EZNEW.Mvc.DataAnnotationsModelValidatorConfig
                     _stringLocalizerFactory);
             }
 
-            var hasRequiredAttribute = false; 
-             var metadata = context.ModelMetadata;
+            var hasRequiredAttribute = false;
+            var metadata = context.ModelMetadata;
             var isPropertyValidation = metadata.ContainerType != null && !String.IsNullOrEmpty(metadata.PropertyName);
             var rules = ValidationManager.GetValidationRules(metadata.ContainerType, metadata.PropertyName);
             if (rules == null)

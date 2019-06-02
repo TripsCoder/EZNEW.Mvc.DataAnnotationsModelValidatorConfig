@@ -1,4 +1,5 @@
 ﻿using EZNEW.Develop.DataValidation;
+using EZNEW.Framework.IoC;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.DataAnnotations.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -17,8 +18,9 @@ namespace EZNEW.Mvc.DataAnnotationsModelValidatorConfig
         private readonly IStringLocalizerFactory _stringLocalizerFactory;
         private readonly IValidationAttributeAdapterProvider _validationAttributeAdapterProvider;
 
-        public CustomDataAnnotationsModelValidatorProvider(IServiceProvider serviceProvider)
+        public CustomDataAnnotationsModelValidatorProvider()
         {
+            IServiceProvider serviceProvider = ContainerManager.ServiceProvider;
             IValidationAttributeAdapterProvider validationAttributeAdapterProvider = serviceProvider.GetService(typeof(IValidationAttributeAdapterProvider)) as IValidationAttributeAdapterProvider;
             IOptions<MvcDataAnnotationsLocalizationOptions> options = serviceProvider.GetService(typeof(IOptions<MvcDataAnnotationsLocalizationOptions>)) as IOptions<MvcDataAnnotationsLocalizationOptions>;
             IStringLocalizerFactory stringLocalizerFactory = serviceProvider.GetService(typeof(IStringLocalizerFactory)) as IStringLocalizerFactory;
